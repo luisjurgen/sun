@@ -10,6 +10,7 @@ const $shotContainer = document.querySelector('#shotsContainer');
 const $flowersContainer = document.querySelector('#flowersContainer');
 const $flowerShotContainer = document.querySelector('#flowerShotContainer');
 const $cursorContainer= document.querySelector('#cursorContainer');
+const $background = document.querySelector('#background');
 let gameClientProperties; //the getBoundgVlientRectValues
 
 
@@ -125,7 +126,7 @@ class Sun{
       $sunRays.setAttribute('transform',`rotate(${INTERACTIVE_ELEMENTS.interactiveAngle*-50} 400 400)`);
     }
     updatePosSun(){
-       let values=rotateValuesOffset(this.xInit,this.yInit,this.radians,this.minMouseX,this.minMouseY,(-GAME_STATE.lastTime/1000)*6,20,20);
+       let values=rotateValuesOffset(this.xInit,this.yInit,this.radians,this.minMouseX,this.minMouseY,(-GAME_STATE.lastTime/1000)*8,20,20);
        this.x=values.dx;
        this.y=values.dy;
         
@@ -168,6 +169,7 @@ class Sun{
             $sunRays.setAttribute('fill',GAME_STATE.currentColor);
             $circleSun.setAttribute('fill',COLORS.yellow);
             setAttributeUse($useSunFrame,'happy',value);
+            $background.style.background=GAME_STATE.currentColor;
             
 
 
@@ -317,7 +319,7 @@ class FlowerShot{
         this.radians=radians;
         this.MAX_SPEED=600;
         this.$shotFlower =document.createElementNS('http://www.w3.org/2000/svg','circle');
-        this.r =10;
+        this.r =15;
         this.color = COLORS.sad;
     }
 
@@ -447,7 +449,7 @@ class LifeRange{
         
         this.colorIndicator='hsl(56,100%,50%)';
         this.lifeState=900;
-        this.textValue = '60%';
+        
     }
     createLifeRange(){
         this.$baseLifeRange.setAttribute('x',this.x);
@@ -456,7 +458,7 @@ class LifeRange{
         this.$baseLifeRange.setAttribute('height',this.height);
         this.$baseLifeRange.setAttribute('rx',this.rx);
         this.$baseLifeRange.setAttribute('ry',this.ry);
-        this.$baseLifeRange.setAttribute('fill','none');
+        this.$baseLifeRange.setAttribute('fill','white');
         this.$baseLifeRange.setAttribute('stroke','black');
 
 
@@ -466,7 +468,6 @@ class LifeRange{
         this.$indicatorLifeRange.setAttribute('rx',this.rx);
         this.$indicatorLifeRange.setAttribute('ry',this.ry);
         this.$indicatorLifeRange.setAttribute('fill',this.colorIndicator);
-        console.log(mapValues(sun.life,0, 100, this.x, this.x+this.width))
         this.$indicatorLifeRange.setAttribute('width', mapValues(sun.life,0, 100, 0, this.width));
 
         this.$lifeText.setAttribute('text-anchor','middle');
@@ -474,7 +475,7 @@ class LifeRange{
         this.$lifeText.setAttribute('y',this.y+this.y/1.25);
         this.$lifeText.setAttribute('font-size','80');
         this.$lifeText.classList.add('textSVG');
-        this.$lifeText.innerHTML = `${sun.life}%`;
+        this.$lifeText.innerHTML = `YOUR LIFE: ${sun.life}%`;
         
 
         this.$groupRange.appendChild(this.$baseLifeRange);
@@ -485,8 +486,8 @@ class LifeRange{
     }
     updatePosRange(){
         this.$indicatorLifeRange.setAttribute('width', mapValues(sun.life,0, 100, 0, this.width));
-        this.$indicatorLifeRange.setAttribute('fill',`hsl(56,${sun.life}%,${sun.life}%)`);
-        this.$lifeText.innerHTML = `${Math.round(sun.life)}%`;
+        this.$indicatorLifeRange.setAttribute('fill',GAME_STATE.currentColor);
+        this.$lifeText.innerHTML = `YOUR LIFE: ${Math.round(sun.life)}%`;
     }
 }
 
@@ -648,7 +649,7 @@ function onMouseUpValidate(e){
 //funcionesGenerales
 function createFlowers(){
   let flowerPadding= SVG_CONTAINER_VALUES.width/12;
-  for(let i=0; i<3; i++){
+  for(let i=0; i<4; i++){
     for(let j=0; j<FLOWERS_PER_ROW; j++){
       let index = i*FLOWERS_PER_ROW + j;
       let yValue= SVG_CONTAINER_VALUES.height/2+ flowerPadding + (i*flowerPadding);
@@ -771,8 +772,7 @@ function updateFlowerShots(dt){
         if(sun.life<=0) continue; //if the condition is true, execute 'continue' that consists in excludes the next code lines of the cicle, but not the cicle for;
         if(rectsIntersects(r1,r2)){
             destroyShot($flowerShotContainer,flowerShot.$shotFlower,flowerShot);
-            sun.life-=0.5;
-            console.log(sun.life);
+            sun.life-=0.75;
            
             break;
         }

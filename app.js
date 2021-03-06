@@ -63,8 +63,8 @@ class Sun{
         this.radians=0;
         this.$sunGroup=document.createElementNS('http://www.w3.org/2000/svg','g');
         this.$sunCall = document.createElementNS('http://www.w3.org/2000/svg','use');
-        this.widthSVG=800;
-        this.heightSVG=800;
+        this.widthSVG=1000;
+        this.heightSVG=1000;
         this.xOffset=this.widthSVG/-2;
         this.yOffset=this.heightSVG/-2;
 
@@ -649,7 +649,7 @@ function onMouseUpValidate(e){
 //funcionesGenerales
 function createFlowers(){
   let flowerPadding= SVG_CONTAINER_VALUES.width/12;
-  for(let i=0; i<4; i++){
+  for(let i=0; i<3; i++){
     for(let j=0; j<FLOWERS_PER_ROW; j++){
       let index = i*FLOWERS_PER_ROW + j;
       let yValue= SVG_CONTAINER_VALUES.height/2+ flowerPadding + (i*flowerPadding);
